@@ -4,6 +4,7 @@
 - No build step, no frameworks, no npm deps. ES modules served statically, same setup as ~/Claude/EveryDay and ~/Claude/FretFlow.
 - All rules live in `js/model.js` (row 0 in code = top = "row 4" on screen). Run `node --test tests/model.test.mjs` after changing them. Computer opponent in `js/ai.js` (easy random / normal = don't hand over a win / hard = one full turn of expectimax).
 - Rulings the rulebook left open (shown in the app's rules sheet): disease is orthogonal and checked before the win; transplants obey altitude; a piece with no legal spot goes back and the turn ends; 8 straight passes = draw.
+- Monoculture disease animation (blight() in app.js): shiver, then flat colour stages sick0 yellowing → sick1 brown → sick2 withered (art.js SICK) with falling leaves, then sink. Noah asked for a dying colour change instead of a fade.
 - Steady interface: controls hold their size and position; disable, don't remove.
 - Game in progress saved in localStorage `coffea.v1`.
 - Icon = one Racemosa (medium green) shrub, large (≈48px top/bottom margin at 512), on the four striped terrace bands (same colours + risers as the board) — Noah's pick after trying Arabica and deep teal. Rebuild: `node tools/make_icon.mjs && zsh tools/render_icons.sh`.

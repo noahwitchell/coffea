@@ -1,4 +1,4 @@
-// Flat art: terraced hillside and coin-like plant tokens. No gradients, no blur — solid faces only.
+// Flat art: terraced hillside and six-lobed coffee shrub tokens. No gradients, no blur — solid faces only.
 export const PAL = {
   // Four greens told apart by hue AND lightness: chartreuse (light, yellow), grass (mid), pale mint (light, blue), deep teal (dark, blue).
   Y: { top: '#bccb3c', side: '#8a962a', berry: '#d2392b' },
@@ -8,10 +8,17 @@ export const PAL = {
   M: { top: '#fbf8f2', side: '#cfc6b6', berry: '#3a3530' },
 };
 // Six-lobed shrub silhouette, flat: one solid top face over a solid side face.
-const shrub = (fill, dy = 0) => `<g fill="${fill}" transform="translate(0 ${dy})">${[0, 1, 2, 3, 4, 5].map(k => {
+// lr/ld/cr = lobe radius, lobe distance, core radius (smaller = withered).
+const shrub = (fill, dy = 0, lr = 13, ld = 19, cr = 20) => `<g fill="${fill}" transform="translate(0 ${dy})">${[0, 1, 2, 3, 4, 5].map(k => {
   const a = (k * 60 - 90) * Math.PI / 180;
-  return `<circle cx="${(Math.cos(a) * 19).toFixed(2)}" cy="${(Math.sin(a) * 19).toFixed(2)}" r="13"/>`;
-}).join('')}<circle r="20"/></g>`;
+  return `<circle cx="${(Math.cos(a) * ld).toFixed(2)}" cy="${(Math.sin(a) * ld).toFixed(2)}" r="${lr}"/>`;
+}).join('')}<circle r="${cr}"/></g>`;
+// Monoculture disease: the same shrub yellowing, browning, then withering, all flat colour.
+export const SICK = [
+  { top: '#c9b74a', side: '#9a8a2f', berry: '#a8452b', lobe: [13, 19, 20], r: 4.6 },
+  { top: '#a77d45', side: '#7a5a30', berry: '#5e3322', lobe: [12, 18, 19], r: 4 },
+  { top: '#6e5134', side: '#4c3722', berry: '#33211a', lobe: [10, 17, 16], r: 3 },
+];
 const CHERRIES = [[0, -14], [-13, 0], [13, 0], [0, 11]];
 
 export function defs() {
@@ -22,6 +29,10 @@ export function defs() {
       : CHERRIES.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.6" fill="${p.berry}"/>`).join('');
     s += `<symbol id="bush${k}" viewBox="-50 -50 100 100" overflow="visible">${shrub(p.side, 6)}${shrub(p.top)}${mark}</symbol>`;
   }
+  SICK.forEach((p, n) => {
+    const [lr, ld, cr] = p.lobe;
+    s += `<symbol id="sick${n}" viewBox="-50 -50 100 100" overflow="visible">${shrub(p.side, 6, lr, ld, cr)}${shrub(p.top, 0, lr, ld, cr)}${CHERRIES.map(([x, y]) => `<circle cx="${x * ld / 19}" cy="${y * ld / 19 + (n ? 2 : 0)}" r="${p.r}" fill="${p.berry}"/>`).join('')}</symbol>`;
+  });
   return s;
 }
 

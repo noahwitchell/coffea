@@ -38,12 +38,10 @@ body {
 .cell.source .slot { animation: nudge 1.4s ease-in-out infinite; }
 .cell.picked .slot { animation: none; transform: translateY(-8px); }
 .cell.picked .ring { opacity: 1; fill: none; stroke-dasharray: none; }
-.cell.wilt .slot { animation: wilt .8s ease-in forwards; }
 .cell.win .ring { opacity: 1; fill: none; stroke-dasharray: none; stroke-width: 4; }
 .cell.dim .slot { opacity: .28; }
 @keyframes breathe { 50% { opacity: .35; } }
 @keyframes nudge { 50% { transform: translateY(-4px); } }
-@keyframes wilt { 30% { filter: grayscale(1) brightness(.75); } 100% { filter: grayscale(1) brightness(.75); transform: translateY(10px) scale(.4); opacity: 0; } }
 
 .tray {
   flex: none; height: 92px; margin-top: 14px; display: grid; grid-template-columns: 68px 68px 1fr; gap: 12px; align-items: center;

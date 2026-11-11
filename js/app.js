@@ -96,7 +96,7 @@ function render() {
   const who = S.names[S.turn];
   let m1 = '', m2 = '';
   if (S.phase === 'over') { m1 = S.winner == null ? 'The mountain is stuck — a draw.' : `${S.names[S.winner]} ${S.winner === 0 && S.setup.mode === 'cpu' ? 'win' : 'wins'}!`; m2 = S.winner == null ? '' : `The ultimate hybrid — a full ${S.winLine.kind} of all four.`; }
-  else if (S.phase === 'draw') { m1 = isCpu() ? 'Computer is drawing…' : `${who}: draw a piece`; m2 = isCpu() ? '' : 'Tap the bag.'; }
+  else if (S.phase === 'draw') { m1 = isCpu() ? 'Computer is drawing…' : (S.setup.mode === 'cpu' ? 'Your turn' : `${who}'s turn`); m2 = isCpu() ? '' : 'Tap the bag.'; }
   else if (S.phase === 'resolving' || S.phase === 'stuck') { m1 = S.phase === 'stuck' ? 'Back in the bag' : 'Planting…'; m2 = ''; }
   else if (S.drawn === M.MOVE) { m1 = isCpu() ? 'Computer transplants…' : 'Transplant!'; m2 = S.phase === 'move-drop' ? 'Tap a dashed plot next to it.' : 'Pick a plant to move one step.'; }
   else { const sp = M.SPECIES[S.drawn]; m1 = isCpu() ? `Computer drew ${sp.name}` : `${sp.name}`; m2 = isCpu() ? '' : `${sp.latin} · ${ROWS_TXT[S.drawn]}`; }
@@ -161,17 +161,44 @@ async function resolve(res) {
   } else slot.animate([{ transform: 'scale(.2)', opacity: 0 }, { transform: 'scale(1.12)', opacity: 1, offset: .7 }, { transform: 'none' }], { duration: 360, easing: 'ease-out' });
   await sleep(420);
   if (res.removed.length) {
-    const sp = piece;
-    res.removed.forEach(r => cells[r].classList.add('wilt'));
-    toast(`Monoculture! ${res.removed.length} ${M.SPECIES[sp].name} plants lost to disease.`, 2400);
-    await sleep(900);
-    res.removed.forEach(r => cells[r].classList.remove('wilt'));
+    toast(`Monoculture! ${res.removed.length} ${M.SPECIES[piece].name} plants lost to disease.`, 2600);
+    await Promise.all(res.removed.map((r, k) => blight(cells[r], k * 90)));
   }
   S.board = res.board; S.pick = null; S.passes = 0;
   const win = M.findWin(S.board);
   busy = false;
   if (win) { S.phase = 'over'; S.winner = S.turn; S.winLine = win; S.score[S.turn]++; render(); celebrate(); return; }
   endTurn();
+}
+
+// Disease: shiver, yellow, brown, wither while leaves drop, then sink into the soil.
+async function blight(cell, delay) {
+  const slot = cell.querySelector('.slot'), use = slot.querySelector('use');
+  await sleep(delay);
+  slot.animate([{ transform: 'none' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(5deg)' }, { transform: 'rotate(-3deg)' }, { transform: 'none' }], { duration: 360 });
+  await sleep(260);
+  for (let n = 0; n < 3; n++) {
+    use.setAttribute('href', `#sick${n}`);
+    if (n === 2) dropLeaves(cell);
+    await sleep(n === 2 ? 420 : 300);
+  }
+  await slot.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(6px) scale(.55, .35)', opacity: 0 }], { duration: 380, easing: 'ease-in', fill: 'forwards' }).finished;
+  slot.dataset.p = 'gone'; slot.innerHTML = '';
+  slot.getAnimations().forEach(a => a.cancel());
+}
+function dropLeaves(cell) {
+  const NS = 'http://www.w3.org/2000/svg', cols = ['#a77d45', '#6e5134', '#c9b74a'];
+  for (let k = 0; k < 5; k++) {
+    const leaf = document.createElementNS(NS, 'ellipse');
+    const x = (k - 2) * 11 + (Math.random() * 6 - 3);
+    leaf.setAttribute('cx', x); leaf.setAttribute('cy', -10 + Math.random() * 14);
+    leaf.setAttribute('rx', 5); leaf.setAttribute('ry', 3); leaf.setAttribute('fill', cols[k % 3]);
+    leaf.style.pointerEvents = 'none';
+    cell.insertBefore(leaf, cell.querySelector('.hit'));
+    const dx = x * .6 + (Math.random() * 16 - 8), dy = 34 + Math.random() * 14, rot = Math.random() * 240 - 120;
+    leaf.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity: 0 }],
+      { duration: 700 + Math.random() * 300, delay: k * 50, easing: 'cubic-bezier(.4,0,.8,.6)', fill: 'forwards' }).finished.then(() => leaf.remove());
+  }
 }
 
 function endTurn() {
