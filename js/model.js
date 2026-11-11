@@ -1,9 +1,9 @@
 // All game rules live here. Board = 16 cells, index = row*4+col, row 0 = top (highest altitude).
 export const SPECIES = {
-  Y: { key: 'Y', name: 'Arabica',  latin: 'Coffea arabica',   color: 'Yellow', rows: [0, 1],       where: 'Top two rows' },
+  Y: { key: 'Y', name: 'Arabica',  latin: 'Coffea arabica',   color: 'Yellow-green', rows: [0, 1],       where: 'Top two rows' },
   G: { key: 'G', name: 'Racemosa', latin: 'Coffea racemosa',  color: 'Green',  rows: [1, 2],       where: 'Middle two rows' },
-  B: { key: 'B', name: 'Liberica', latin: 'Coffea liberica',  color: 'Blue',   rows: [1, 2, 3],    where: 'Bottom three rows' },
-  R: { key: 'R', name: 'Robusta',  latin: 'Coffea canephora', color: 'Red',    rows: [0, 1, 2, 3], where: 'Anywhere' },
+  B: { key: 'B', name: 'Liberica', latin: 'Coffea liberica',  color: 'Deep teal',   rows: [1, 2, 3],    where: 'Bottom three rows' },
+  R: { key: 'R', name: 'Robusta',  latin: 'Coffea canephora', color: 'Seafoam',    rows: [0, 1, 2, 3], where: 'Anywhere' },
 };
 export const PLANTS = ['Y', 'G', 'B', 'R'];
 export const MOVE = 'M';
