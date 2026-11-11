@@ -171,23 +171,24 @@ async function resolve(res) {
   endTurn();
 }
 
-// Disease: shiver, yellow, brown, wither while leaves drop, then sink into the soil.
+// Disease: shiver, fade smoothly from full colour into a withered shrub, then fade away as the leaves drop.
 async function blight(cell, delay) {
   const slot = cell.querySelector('.slot'), use = slot.querySelector('use');
   await sleep(delay);
   slot.animate([{ transform: 'none' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(5deg)' }, { transform: 'rotate(-3deg)' }, { transform: 'none' }], { duration: 360 });
-  await sleep(260);
-  for (let n = 0; n < 3; n++) {
-    use.setAttribute('href', `#sick${n}`);
-    if (n === 2) dropLeaves(cell);
-    await sleep(n === 2 ? 420 : 300);
-  }
-  await slot.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(6px) scale(.55, .35)', opacity: 0 }], { duration: 380, easing: 'ease-in', fill: 'forwards' }).finished;
+  await sleep(300);
+  const dead = use.cloneNode(); dead.setAttribute('href', '#withered'); dead.style.opacity = 0;
+  slot.appendChild(dead);
+  const T = { duration: 1000, easing: 'ease-in-out', fill: 'forwards' };
+  use.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.86)' }], T);
+  await dead.animate([{ opacity: 0, transform: 'scale(1.14)' }, { opacity: 1, transform: 'none' }], T).finished;
+  dropLeaves(cell);
+  await slot.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(5px) scale(.9)' }], { duration: 700, easing: 'ease-in', fill: 'forwards' }).finished;
   slot.dataset.p = 'gone'; slot.innerHTML = '';
   slot.getAnimations().forEach(a => a.cancel());
 }
 function dropLeaves(cell) {
-  const NS = 'http://www.w3.org/2000/svg', cols = ['#a77d45', '#6e5134', '#c9b74a'];
+  const NS = 'http://www.w3.org/2000/svg', cols = ['#8a6640', '#6e5134', '#a8924a'];
   for (let k = 0; k < 5; k++) {
     const leaf = document.createElementNS(NS, 'ellipse');
     const x = (k - 2) * 11 + (Math.random() * 6 - 3);
