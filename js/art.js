@@ -30,7 +30,7 @@ export const CELL = 100, OX = 38, OY = 64, RISER = 10, W = OX + 4 * CELL + 16, H
 export const cx = i => OX + (i & 3) * CELL + CELL / 2;
 export const cy = i => OY + (i >> 2) * CELL + CELL / 2 - RISER / 2;
 
-const TERRACE = [['#f2e3c6', '#e2cca5'], ['#ead3ad', '#d6b98b'], ['#e0c091', '#c9a46f'], ['#d4ab76', '#b98f5a']];
+export const TERRACE = [['#f2e3c6', '#e2cca5'], ['#ead3ad', '#d6b98b'], ['#e0c091', '#c9a46f'], ['#d4ab76', '#b98f5a']];
 export function hillside() {
   let s = `<rect width="${W}" height="${H}" fill="#d9e8ec"/>
     <circle cx="${W - 92}" cy="34" r="20" fill="#f7dcc0"/>
