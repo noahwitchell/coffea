@@ -6,5 +6,5 @@
 - Rulings the rulebook left open (shown in the app's rules sheet): disease is orthogonal and checked before the win; transplants obey altitude; a piece with no legal spot goes back and the turn ends; 8 straight passes = draw.
 - Steady interface: controls hold their size and position; disable, don't remove.
 - Game in progress saved in localStorage `coffea.v1`.
-- Icon = one Arabica shrub on the tan terrace colour (Noah's pick). Rebuild: `node tools/make_icon.mjs && zsh tools/render_icons.sh`.
+- Icon = one Liberica (deep teal, darkest piece) shrub on the tan terrace colour (Noah asked for a darker piece than Arabica). Rebuild: `node tools/make_icon.mjs && zsh tools/render_icons.sh`.
 - Public repo github.com/noahwitchell/coffea, GitHub Pages from main (push = deploy). Bump CACHE in sw.js when shipping.
