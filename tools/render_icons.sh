@@ -5,7 +5,7 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 TMP=$(mktemp -d)
 for s in 180 192 512; do
   cat > "$TMP/i.html" <<H
-<html><body style="margin:0;background:#5cb8e6"><img src="file://$PWD/icons/icon.svg" width="$s" height="$s" style="display:block"></body></html>
+<html><body style="margin:0;background:#d9e8ec"><img src="file://$PWD/icons/icon.svg" width="$s" height="$s" style="display:block"></body></html>
 H
   "$CHROME" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
     --window-size=$s,$s --screenshot="$PWD/icons/icon-$s.png" "file://$TMP/i.html" >/dev/null 2>&1

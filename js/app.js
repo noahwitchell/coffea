@@ -40,14 +40,14 @@ document.querySelector('#app').innerHTML = `
       ${hillside()}
       <g id="wincage"></g>
       ${Array.from({ length: 16 }, (_, i) => `<g class="cell" data-i="${i}" transform="translate(${cx(i)} ${cy(i)})">
-        ${hole()}<circle class="ring" r="40"/><g class="slot"></g><rect class="hit" x="-50" y="-50" width="100" height="100"/></g>`).join('')}
+        ${hole()}<circle class="ring" r="38" cy="2"/><g class="slot"></g><rect class="hit" x="-50" y="-50" width="100" height="100"/></g>`).join('')}
     </svg>
   </div>
   <div class="tray">
     <button id="bag" class="bag" aria-label="Draw from the bag">
-      <svg viewBox="0 0 100 100"><path d="M22 34 Q20 22 34 20 L66 20 Q80 22 78 34 L86 82 Q86 94 72 94 L28 94 Q14 94 14 82 Z" fill="#b58a55" stroke="#6e4f2b" stroke-width="3"/>
-      <path d="M30 22 Q50 34 70 22" fill="none" stroke="#6e4f2b" stroke-width="4"/><path d="M26 44 L74 44 M22 60 L78 60 M19 76 L81 76" stroke="#9c7442" stroke-width="2" stroke-dasharray="4 5"/>
-      <text x="50" y="72" text-anchor="middle" class="bagn"></text></svg>
+      <svg viewBox="0 0 100 100"><path d="M24 36 L30 22 L70 22 L76 36 L84 86 L16 86 Z" fill="#c99a62"/><path d="M24 36 L76 36 L84 86 L50 86 Z" fill="#b8874f"/>
+      <rect x="30" y="16" width="40" height="8" rx="2" fill="#8a6237"/>
+      <text x="50" y="70" text-anchor="middle" class="bagn"></text></svg>
       <span class="baglbl">Draw</span>
     </button>
     <div class="drawn"><div class="dpiece"></div></div>
@@ -201,7 +201,7 @@ function openSetup() {
     <label>Opponent</label>${seg('mode', [['cpu', 'Computer'], ['pvp', 'Pass &amp; play']], st.mode)}
     <label class="lv">Computer skill</label>${seg('level', [['easy', 'Easy'], ['normal', 'Normal'], ['hard', 'Hard']], st.level)}
     <label>Who goes first</label>${seg('first', [['0', 'Player 1'], ['1', 'Player 2'], ['random', 'Random']], String(st.first))}
-    <div class="row2">${S ? '<button class="btn ghost" id="cancel">Cancel</button>' : ''}<button class="btn" id="go">Plant!</button></div>`);
+    <div class="row2">${S ? '<button class="btn ghost" id="cancel">Cancel</button>' : ''}<button class="btn" id="go">Start</button></div>`);
   const pick = {}; sh.querySelectorAll('.seg').forEach(g => { pick[g.dataset.name] = g.querySelector('.on').dataset.v; });
   const sync = () => {
     const cpu = pick.mode === 'cpu';
