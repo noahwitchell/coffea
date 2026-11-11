@@ -98,7 +98,7 @@ function render() {
   if (S.phase === 'over') { m1 = S.winner == null ? 'The mountain is stuck — a draw.' : `${S.names[S.winner]} ${S.winner === 0 && S.setup.mode === 'cpu' ? 'win' : 'wins'}!`; m2 = S.winner == null ? '' : `The ultimate hybrid — a full ${S.winLine.kind} of all four.`; }
   else if (S.phase === 'draw') { m1 = isCpu() ? 'Computer is drawing…' : `${who}: draw a piece`; m2 = isCpu() ? '' : 'Tap the bag.'; }
   else if (S.phase === 'resolving' || S.phase === 'stuck') { m1 = S.phase === 'stuck' ? 'Back in the bag' : 'Planting…'; m2 = ''; }
-  else if (S.drawn === M.MOVE) { m1 = isCpu() ? 'Computer transplants…' : 'Transplant!'; m2 = S.phase === 'move-drop' ? 'Tap a glowing plot next to it.' : 'Pick a plant to move one step.'; }
+  else if (S.drawn === M.MOVE) { m1 = isCpu() ? 'Computer transplants…' : 'Transplant!'; m2 = S.phase === 'move-drop' ? 'Tap a dashed plot next to it.' : 'Pick a plant to move one step.'; }
   else { const sp = M.SPECIES[S.drawn]; m1 = isCpu() ? `Computer drew ${sp.name}` : `${sp.name}`; m2 = isCpu() ? '' : `${sp.latin} · ${ROWS_TXT[S.drawn]}`; }
   $('.m1').textContent = m1; $('.m2').textContent = m2;
   $('.tally').innerHTML = [...M.PLANTS, M.MOVE].map(k => `<span class="t">${svgPiece(k)}<b>${counts[k] - (S.drawn === k ? 1 : 0)}</b></span>`).join('') + '<span class="tlbl">in the bag</span>';

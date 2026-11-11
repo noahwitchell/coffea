@@ -1,25 +1,25 @@
 // Flat art: terraced hillside and coin-like plant tokens. No gradients, no blur — solid faces only.
 export const PAL = {
-  Y: { top: '#efb43f', side: '#b98425', mark: '#8a5f14' },
-  G: { top: '#3e9a6e', side: '#2a6e4e', mark: '#1d4f37' },
-  B: { top: '#34508f', side: '#22386a', mark: '#172648' },
-  R: { top: '#e2573f', side: '#a93a28', mark: '#7d2617' },
-  M: { top: '#fbf8f2', side: '#cfc6b6', mark: '#3a3530' },
+  Y: { top: '#efb43f', side: '#b98425', berry: '#c8352a' },
+  G: { top: '#3e9a6e', side: '#2a6e4e', berry: '#c8352a' },
+  B: { top: '#34508f', side: '#22386a', berry: '#e2573f' },
+  R: { top: '#e2573f', side: '#a93a28', berry: '#fbefd6' },
+  M: { top: '#fbf8f2', side: '#cfc6b6', berry: '#3a3530' },
 };
-const R = 30;
-// Coffee bean: an oval with an S-crease.
-const bean = c => `<g transform="rotate(-28)"><ellipse rx="10.5" ry="15" fill="${c}"/>
-  <path d="M0 -14 C-5 -6 5 6 0 14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></g>`;
+// Six-lobed shrub silhouette, flat: one solid top face over a solid side face.
+const shrub = (fill, dy = 0) => `<g fill="${fill}" transform="translate(0 ${dy})">${[0, 1, 2, 3, 4, 5].map(k => {
+  const a = (k * 60 - 90) * Math.PI / 180;
+  return `<circle cx="${(Math.cos(a) * 19).toFixed(2)}" cy="${(Math.sin(a) * 19).toFixed(2)}" r="13"/>`;
+}).join('')}<circle r="20"/></g>`;
+const CHERRIES = [[0, -14], [-13, 0], [13, 0], [0, 11]];
 
 export function defs() {
   let s = '';
   for (const [k, p] of Object.entries(PAL)) {
     const mark = k === 'M'
-      ? `<path d="M-14 6 A14 14 0 1 1 10 10" fill="none" stroke="${p.mark}" stroke-width="4" stroke-linecap="round"/><path d="M3 4 L13 14 L17 1 Z" fill="${p.mark}"/>`
-      : `<g color="${p.top}">${bean(p.mark)}</g>`;
-    s += `<symbol id="bush${k}" viewBox="-50 -50 100 100" overflow="visible">
-      <circle cy="6" r="${R}" fill="${p.side}"/><rect x="-${R}" y="0" width="${R * 2}" height="6" fill="${p.side}"/>
-      <circle r="${R}" fill="${p.top}"${k === 'M' ? ` stroke="${p.side}" stroke-width="1.5"` : ''}/>${mark}</symbol>`;
+      ? `<path d="M-12 5 A12 12 0 1 1 9 9" fill="none" stroke="${p.berry}" stroke-width="3.6" stroke-linecap="round"/><path d="M3 3 L12 12 L15 0 Z" fill="${p.berry}"/>`
+      : CHERRIES.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.6" fill="${p.berry}"/>`).join('');
+    s += `<symbol id="bush${k}" viewBox="-50 -50 100 100" overflow="visible">${shrub(p.side, 6)}${shrub(p.top)}${mark}</symbol>`;
   }
   return s;
 }
@@ -44,4 +44,4 @@ export function hillside() {
   return s;
 }
 // Empty plot: a flat planting hole.
-export const hole = () => `<circle r="${R}" cy="3" fill="rgba(110,70,30,.16)"/>`;
+export const hole = () => `<g opacity=".16">${shrub('#6e461e', 3)}</g>`;
