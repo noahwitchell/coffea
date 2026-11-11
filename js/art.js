@@ -1,10 +1,10 @@
 // Flat art: terraced hillside and coin-like plant tokens. No gradients, no blur — solid faces only.
 export const PAL = {
-  // Four greens told apart by hue AND lightness: chartreuse (light, yellow), grass (mid), seafoam (light, blue), deep teal (dark).
+  // Four greens told apart by hue AND lightness: chartreuse (light, yellow), grass (mid), pale mint (light, blue), teal (mid, blue).
   Y: { top: '#bccb3c', side: '#8a962a', berry: '#d2392b' },
   G: { top: '#4f9a45', side: '#386f31', berry: '#d2392b' },
-  R: { top: '#79c2ab', side: '#4f8f7b', berry: '#d2392b' },
-  B: { top: '#1f5b5a', side: '#123b3a', berry: '#e2483a' },
+  R: { top: '#a9dccb', side: '#78ad9b', berry: '#d2392b' },
+  B: { top: '#2f8580', side: '#1f5f5b', berry: '#d2392b' },
   M: { top: '#fbf8f2', side: '#cfc6b6', berry: '#3a3530' },
 };
 // Six-lobed shrub silhouette, flat: one solid top face over a solid side face.
